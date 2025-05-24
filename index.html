@@ -165,7 +165,26 @@
             transform: rotate(90deg);
         }
 
-        /* Обновленные стили для селектора тем */
+        /* Обновляем стили для оверлея */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Обновляем стили для селектора тем */
         .theme-selector {
             position: fixed;
             top: 0;
@@ -182,6 +201,7 @@
             width: 280px;
             transition: left 0.3s ease;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Для плавной прокрутки на iOS */
         }
 
         .theme-selector.active {
@@ -355,24 +375,9 @@
             }
         }
 
-        /* Добавляем затемнение фона при открытом меню */
+        /* Удаляем старый оверлей */
         .theme-selector::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-
-        .theme-selector.active::after {
-            opacity: 1;
-            visibility: visible;
+            display: none;
         }
 
         * {
@@ -941,6 +946,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="menu-overlay" onclick="closeThemeMenu()"></div>
     <button class="menu-button" onclick="toggleThemeMenu()">
         <i class="fas fa-bars"></i>
     </button>
@@ -1204,34 +1210,39 @@
     </div>
 
     <script>
-        // Добавляем функцию для переключения меню тем
+        // Обновляем функцию переключения меню
         function toggleThemeMenu() {
             const menuButton = document.querySelector('.menu-button');
             const themeSelector = document.querySelector('.theme-selector');
+            const overlay = document.querySelector('.menu-overlay');
             
             menuButton.classList.toggle('active');
             themeSelector.classList.toggle('active');
+            overlay.classList.toggle('active');
             
             // Меняем иконку при открытии/закрытии
             const icon = menuButton.querySelector('i');
             if (menuButton.classList.contains('active')) {
                 icon.className = 'fas fa-times';
+                document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
             } else {
                 icon.className = 'fas fa-bars';
+                document.body.style.overflow = ''; // Разблокируем прокрутку
             }
         }
 
-        // Закрываем меню при клике вне его
-        document.addEventListener('click', (e) => {
+        // Добавляем функцию закрытия меню
+        function closeThemeMenu() {
             const menuButton = document.querySelector('.menu-button');
             const themeSelector = document.querySelector('.theme-selector');
+            const overlay = document.querySelector('.menu-overlay');
             
-            if (!menuButton.contains(e.target) && !themeSelector.contains(e.target)) {
-                menuButton.classList.remove('active');
-                themeSelector.classList.remove('active');
-                menuButton.querySelector('i').className = 'fas fa-bars';
-            }
-        });
+            menuButton.classList.remove('active');
+            themeSelector.classList.remove('active');
+            overlay.classList.remove('active');
+            menuButton.querySelector('i').className = 'fas fa-bars';
+            document.body.style.overflow = ''; // Разблокируем прокрутку
+        }
 
         // Обновляем функцию changeTheme
         function changeTheme(theme) {
@@ -1247,18 +1258,38 @@
             });
 
             // Закрываем меню после выбора темы
-            const menuButton = document.querySelector('.menu-button');
-            const themeSelector = document.querySelector('.theme-selector');
-            menuButton.classList.remove('active');
-            themeSelector.classList.remove('active');
-            menuButton.querySelector('i').className = 'fas fa-bars';
+            closeThemeMenu();
         }
 
-        // Загружаем сохраненную тему при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            changeTheme(savedTheme);
+        // Добавляем обработчик для кнопки Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeThemeMenu();
+            }
         });
+
+        // Добавляем обработчик для свайпа влево
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const themeSelector = document.querySelector('.theme-selector');
+            if (themeSelector.classList.contains('active')) {
+                const swipeDistance = touchEndX - touchStartX;
+                if (swipeDistance < -50) { // Свайп влево
+                    closeThemeMenu();
+                }
+            }
+        }
 
         function showSection(sectionId) {
             // Скрываем все секции
