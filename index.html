@@ -152,18 +152,23 @@
             touch-action: manipulation;
         }
 
+        .menu-button i {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-button.active i {
+            transform: rotate(180deg);
+            opacity: 0.8;
+        }
+
         .menu-button:hover {
             transform: scale(1.1);
         }
 
-        .menu-button i {
-            font-size: 1.5em;
-            color: var(--text-primary);
-            transition: transform 0.3s ease;
-        }
-
-        .menu-button.active i {
-            transform: rotate(90deg);
+        .menu-button:hover i {
+            opacity: 0.8;
         }
 
         /* Обновляем стили для оверлея */
@@ -176,9 +181,10 @@
             background: rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
             z-index: 999;
             touch-action: none;
+            will-change: opacity, visibility;
         }
 
         .menu-overlay.active {
@@ -190,7 +196,7 @@
         .theme-selector {
             position: fixed;
             top: 0;
-            left: -300px;
+            left: 0;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -201,15 +207,17 @@
             box-shadow: 0 5px 15px var(--shadow-color);
             height: 100%;
             width: 280px;
-            transition: transform 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            transform: translateX(0);
-            will-change: transform;
+            opacity: 0;
+            visibility: hidden;
+            will-change: opacity, visibility;
         }
 
         .theme-selector.active {
-            transform: translateX(300px);
+            opacity: 1;
+            visibility: visible;
         }
 
         .theme-selector::before {
@@ -1227,9 +1235,6 @@
                 themeSelector.classList.add('active');
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                
-                const icon = menuButton.querySelector('i');
-                icon.className = 'fas fa-times';
             }
         }
 
@@ -1243,9 +1248,6 @@
             themeSelector.classList.remove('active');
             overlay.classList.remove('active');
             document.body.style.overflow = '';
-            
-            const icon = menuButton.querySelector('i');
-            icon.className = 'fas fa-bars';
         }
 
         // Обработчик для оверлея
