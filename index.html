@@ -1379,6 +1379,223 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .achievements-counter {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .counter-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        .counter-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .counter-item i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .counter-item .counter {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+            margin: 10px 0;
+        }
+
+        .counter-item p {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .achievements-counter {
+                gap: 20px;
+            }
+
+            .counter-item {
+                min-width: 120px;
+                padding: 15px;
+            }
+
+            .counter-item i {
+                font-size: 2em;
+            }
+
+            .counter-item .counter {
+                font-size: 2em;
+            }
+
+            .counter-item p {
+                font-size: 1em;
+            }
+        }
+
+        /* Стили для чата */
+        .chat-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+            animation: messageAppear 0.3s ease;
+        }
+
+        .message.guest {
+            background: var(--accent-gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.system {
+            background: var(--card-bg);
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            align-self: center;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .message-time {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--shadow-color);
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--text-primary);
+            border-radius: 25px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-gradient);
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        .chat-send-button {
+            background: var(--accent-gradient);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-send-button i {
+            font-size: 1.2em;
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width:768px) {
+            .chat-container {
+                height: 500px;
+                margin: 10px;
+            }
+            .message {
+                max-width: 85%;
+            }
+            .chat-input-container {
+                padding: 10px;
+            }
+            .chat-input {
+                padding: 10px 15px;
+            }
+            .chat-send-button {
+                width: 40px;
+                height: 40px;
+            }
+            @media (max-width:768px) {
+            .chat-container {
+                height: 500px;
+                margin: 10px;
+            }
+            .message {
+                max-width: 85%;
+            }
+            .chat-input-container {
+                padding: 10px;
+            }
+            .chat-input {
+                padding: 10px 15px;
+            }
+            .chat-send-button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -1420,6 +1637,23 @@
     <div class="container">
         <header>
             <h1>9 класс - Наша визитка</h1>
+            <div class="achievements-counter">
+                <div class="counter-item">
+                    <i class="fas fa-trophy"></i>
+                    <span class="counter" data-target="2">0</span>
+                    <p>Олимпиады</p>
+                </div>
+                <div class="counter-item">
+                    <i class="fas fa-medal"></i>
+                    <span class="counter" data-target="1">0</span>
+                    <p>Спорт</p>
+                </div>
+                <div class="counter-item">
+                    <i class="fas fa-users"></i>
+                    <span class="counter" data-target="31">0</span>
+                    <p>Учеников</p>
+                </div>
+            </div>
         </header>
 
         <div class="search-container">
@@ -1445,6 +1679,10 @@
             <div class="category-card" onclick="showSection('gallery')">
                 <h2>Галерея</h2>
                 <p>Фотографии нашего класса</p>
+            </div>
+            <div class="category-card" onclick="showSection('chat')">
+                <h2>Гостевой чат</h2>
+                <p>Оставьте свое сообщение</p>
             </div>
         </div>
 
@@ -1550,9 +1788,9 @@
                     <div class="student-info">2010 год</div>
                 </div>
                 <div class="student-card">
-                    <div class="student-photo">Фото 12</div>
-                    <div class="student-name">Ученик 12</div>
-                    <div class="student-info">Спортсмен</div>
+                    <div class="student-photo"><img src="kirilova.jpg" alt="Кирилова Арина" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Кирилова Арина</div>
+                    <div class="student-info">2009 год</div>
                 </div>
                 <div class="student-card">
                     <div class="student-photo">Фото 13</div>
@@ -1648,6 +1886,23 @@
                     <div class="student-photo">Фото 31</div>
                     <div class="student-name">Ученик 31</div>
                     <div class="student-info">Участник олимпиад</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Добавляем секцию чата -->
+        <div id="chat" class="content-section">
+            <button class="back-button" onclick="hideSections()">← Назад</button>
+            <h2>Гостевой чат</h2>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Сообщения будут добавляться здесь -->
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="messageInput" placeholder="Введите ваше сообщение..." class="chat-input">
+                    <button onclick="sendMessage()" class="chat-send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1954,10 +2209,11 @@
                 const img = document.createElement('img');
                 img.src = photo;
                 img.alt = album.name;
+                img.loading = 'lazy'; // Добавляем ленивую загрузку
                 
                 img.onerror = function() {
                     console.log('Error loading image:', photo);
-                    this.src = 'placeholder.jpg';
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5Ij5Изображение не найдено</text></svg>';
                     this.classList.add('error');
                 };
                 
@@ -2124,6 +2380,150 @@
                 scrollToSection(sectionId);
             }
         }
+
+        // Добавляем функцию для анимации счетчика
+        function animateCounter() {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+
+                        const updateCounter = () => {
+                            current += step;
+                            if (current < target) {
+                                counter.textContent = Math.ceil(current);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target;
+                            }
+                        };
+
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        // Добавляем атрибуты доступности
+        document.addEventListener('DOMContentLoaded', () => {
+            // Добавляем ARIA-атрибуты для кнопок
+            document.querySelectorAll('button').forEach(button => {
+                if (!button.getAttribute('aria-label')) {
+                    button.setAttribute('aria-label', button.textContent.trim());
+                }
+            });
+
+            // Добавляем ARIA-атрибуты для изображений
+            document.querySelectorAll('img').forEach(img => {
+                if (!img.getAttribute('alt')) {
+                    img.setAttribute('alt', 'Изображение');
+                }
+            });
+
+            // Инициализируем анимацию счетчика
+            animateCounter();
+        });
+
+        // Функции для чата
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            // Проверка длины сообщения
+            if (message.length > 500) {
+                alert('Сообщение слишком длинное. Максимальная длина - 500 символов.');
+                return;
+            }
+            
+            // Проверка частоты отправки
+            const lastMessageTime = localStorage.getItem('lastMessageTime');
+            const now = Date.now();
+            if (lastMessageTime && now - parseInt(lastMessageTime) < 1000) {
+                alert('Пожалуйста, подождите 1 секунду перед отправкой следующего сообщения.');
+                return;
+            }
+            
+            if (message) {
+                addMessage(message, 'guest');
+                input.value = '';
+                
+                // Сохраняем сообщение в localStorage
+                saveMessage(message);
+                localStorage.setItem('lastMessageTime', now.toString());
+                
+                // Автоматическая прокрутка к последнему сообщению
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function addMessage(text, type) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const time = new Date().toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="message-text">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+        }
+
+        function saveMessage(message) {
+            let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+            messages.push({
+                text: message,
+                time: new Date().toISOString()
+            });
+            
+            // Ограничиваем количество сохраненных сообщений
+            if (messages.length > 50) {
+                messages = messages.slice(-50);
+            }
+            
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+            messages.forEach(msg => {
+                const time = new Date(msg.time).toLocaleTimeString();
+                addMessage(msg.text, 'guest');
+            });
+        }
+
+        // Загружаем сообщения при открытии чата
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatSection = document.getElementById('chat');
+            if (chatSection) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            loadMessages();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                observer.observe(chatSection);
+            }
+        });
+
+        // Обработка нажатия Enter в поле ввода
+        document.getElementById('messageInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
