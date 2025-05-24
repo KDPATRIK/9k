@@ -1596,6 +1596,139 @@
             }
         }
         }
+
+        /* Стили для модального окна ученика */
+        .student-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .student-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .student-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.3s ease;
+        }
+
+        .student-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .student-modal-title {
+            font-size: 1.8em;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .student-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .student-modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .student-modal-body {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .student-modal-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .student-modal-photo {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .student-modal-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .student-modal-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .student-modal-info {
+            color: var(--text-primary);
+        }
+
+        .student-modal-info h3 {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .student-modal-info p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .student-modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .student-modal-content {
+                width: 95%;
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            .student-modal-title {
+                font-size: 1.5em;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -2507,6 +2640,102 @@
             if (e.key === 'Enter') {
                 sendMessage();
             }
+        });
+
+        // Добавляем данные о биографиях учеников
+        const studentBios = {
+            'mursa': {
+                name: 'Мурса Арина',
+                bio: 'Активная участница школьных мероприятий. Увлекается рисованием и танцами. Отличница, помогает одноклассникам с учебой.',
+                photos: ['mursa.jpg', 'mursa_1.jpg', 'mursa_2.jpg', 'mursa_3.jpg']
+            },
+            'rudic': {
+                name: 'Рудик Анастасия',
+                bio: 'Творческая личность, участвует в школьных концертах. Любит петь и танцевать. Хорошо учится, особенно по гуманитарным предметам.',
+                photos: ['rudic.jpg', 'rudic_1.jpg', 'rudic_2.jpg', 'rudic_3.jpg']
+            },
+            'drob': {
+                name: 'Дробицкая Дарья',
+                bio: 'Спортсменка, занимается волейболом. Активная участница школьной жизни. Хорошо учится, особенно по математике.',
+                photos: ['drob.jpg', 'drob_1.jpg', 'drob_2.jpg', 'drob_3.jpg']
+            },
+            'plotnik': {
+                name: 'Плотников Сергей',
+                bio: 'Увлекается программированием и робототехникой. Участник олимпиад по информатике. Помогает с техническими вопросами в школе.',
+                photos: ['plotnik.jpg', 'plotnik_1.jpg', 'plotnik_2.jpg', 'plotnik_3.jpg']
+            },
+            'melnic': {
+                name: 'Мельник Тимофей',
+                bio: 'Спортсмен, занимается футболом. Капитан школьной команды. Хорошо учится, особенно по физике.',
+                photos: ['melnic.jpg', 'melnic_1.jpg', 'melnic_2.jpg', 'melnic_3.jpg']
+            }
+            // Добавьте биографии для остальных учеников
+        };
+
+        // Функция для открытия модального окна ученика
+        function openStudentModal(studentId) {
+            const student = studentBios[studentId];
+            if (!student) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'student-modal';
+            modal.innerHTML = `
+                <div class="student-modal-content">
+                    <div class="student-modal-header">
+                        <h2 class="student-modal-title">${student.name}</h2>
+                        <button class="student-modal-close" onclick="this.closest('.student-modal').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="student-modal-body">
+                        <div class="student-modal-photos">
+                            ${student.photos.map(photo => `
+                                <div class="student-modal-photo">
+                                    <img src="${photo}" alt="${student.name}" loading="lazy">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="student-modal-info">
+                            <h3>О себе</h3>
+                            <p>${student.bio}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+
+            // Добавляем обработчик для закрытия по клику вне контента
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Добавляем обработчик для клавиши Escape
+            document.addEventListener('keydown', function closeOnEscape(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                    document.removeEventListener('keydown', closeOnEscape);
+                }
+            });
+        }
+
+        // Обновляем обработчики для карточек учеников
+        document.addEventListener('DOMContentLoaded', () => {
+            const studentCards = document.querySelectorAll('.student-card');
+            studentCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const studentId = card.querySelector('.student-photo img')?.src.split('/').pop().split('.')[0].toLowerCase();
+                    if (studentId && studentBios[studentId]) {
+                        openStudentModal(studentId);
+                    }
+                });
+            });
         });
     </script>
 </body>
