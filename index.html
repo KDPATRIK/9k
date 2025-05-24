@@ -1073,9 +1073,29 @@
 
         /* Добавляем анимацию для заголовка */
         @keyframes titleAnimation {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes cardHover {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+            100% { transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes photoHover {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .student-card:hover {
+            animation: cardHover 0.5s ease;
+        }
+
+        .student-photo:hover img {
+            animation: photoHover 0.5s ease;
         }
 
         h1 {
@@ -1216,6 +1236,149 @@
                 font-size: 0.9em;
             }
         }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .achievement-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .achievement-card i {
+            font-size: 3em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .achievement-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .achievement-card ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .achievement-card li {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .achievement-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-primary);
+        }
+
+        .events-timeline {
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .events-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--accent-gradient);
+        }
+
+        .event-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            margin-bottom: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .event-date {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .event-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .event-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .event-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .event-gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .event-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .events-timeline::before {
+                left: 20px;
+            }
+
+            .event-card {
+                margin-left: 40px;
+            }
+
+            .event-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -1279,10 +1442,6 @@
                 <h2>Достижения</h2>
                 <p>Наши победы и успехи</p>
             </div>
-            <div class="category-card" onclick="showSection('events')">
-                <h2>Мероприятия</h2>
-                <p>Фото и рассказы о наших мероприятиях</p>
-            </div>
             <div class="category-card" onclick="showSection('gallery')">
                 <h2>Галерея</h2>
                 <p>Фотографии нашего класса</p>
@@ -1298,13 +1457,28 @@
         <div id="achievements" class="content-section">
             <button class="back-button" onclick="hideSections()">← Назад</button>
             <h2>Наши достижения</h2>
-            <p>Здесь будут отображаться наши победы в олимпиадах, конкурсах и спортивных соревнованиях.</p>
-        </div>
-
-        <div id="events" class="content-section">
-            <button class="back-button" onclick="hideSections()">← Назад</button>
-            <h2>Мероприятия</h2>
-            <p>Рассказы о наших поездках, праздниках и других интересных событиях.</p>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Олимпиады</h3>
+                    <ul>
+                        <li>2 и 3 места в олимпиаде по физике</li>
+                    </ul>
+                </div>
+                <div class="achievement-card">
+                    <i class="fas fa-medal"></i>
+                    <h3>Спорт</h3>
+                    <ul>
+                        <li>1 место в соревнованиях по баскетболу среди 8-9 классов</li>
+                    </ul>
+                </div>
+                <div class="achievement-card">
+                    <i class="fas fa-award"></i>
+                    <h3>Творчество</h3>
+                    <ul>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div id="gallery" class="content-section">
@@ -1900,6 +2074,56 @@
                 scrollButton.style.opacity = '0';
             }
         });
+
+        // Добавляем обработчик для изображений мероприятий
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventImages = document.querySelectorAll('.event-gallery img');
+            eventImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    const modal = document.createElement('div');
+                    modal.className = 'gallery-modal active';
+                    modal.innerHTML = `
+                        <div class="gallery-content">
+                            <button class="gallery-close" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="gallery-header">
+                                <button class="gallery-back" onclick="this.parentElement.parentElement.parentElement.remove()">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Назад
+                                </button>
+                                <span class="gallery-title">Мероприятие</span>
+                            </div>
+                            <div class="gallery-grid">
+                                <div class="gallery-item">
+                                    <img src="${img.src}" alt="${img.alt}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+        });
+
+        // Добавляем функцию для плавной прокрутки к секциям
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Обновляем функцию showSection
+        function showSection(sectionId) {
+            hideSections();
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+                scrollToSection(sectionId);
+            }
+        }
     </script>
 </body>
 </html>
