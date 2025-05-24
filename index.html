@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 класс - Наша визитка</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root[data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #f6f9fc 0%, #e9f2f9 100%);
+            --card-bg: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #666;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --accent-gradient: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+            --card-bg: #2d3436;
+            --text-primary: #ecf0f1;
+            --text-secondary: #bdc3c7;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --header-bg: rgba(45, 52, 54, 0.95);
+            --accent-gradient: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        :root[data-theme="space"] {
+            --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --card-bg: rgba(44, 62, 80, 0.9);
+            --text-primary: #ecf0f1;
+            --text-secondary: #bdc3c7;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(44, 62, 80, 0.95);
+            --accent-gradient: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+
+        :root[data-theme="ocean"] {
+            --bg-gradient: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            --card-bg: rgba(26, 41, 128, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #a8e6cf;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --header-bg: rgba(26, 41, 128, 0.95);
+            --accent-gradient: linear-gradient(90deg, #00c6ff, #0072ff);
+        }
+
+        :root[data-theme="forest"] {
+            --bg-gradient: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+            --card-bg: rgba(19, 78, 94, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #a8e6cf;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --header-bg: rgba(19, 78, 94, 0.95);
+            --accent-gradient: linear-gradient(90deg, #56ab2f, #a8e063);
+        }
+
+        :root[data-theme="sunset"] {
+            --bg-gradient: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+            --card-bg: rgba(221, 36, 118, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #ffd3d3;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --header-bg: rgba(221, 36, 118, 0.95);
+            --accent-gradient: linear-gradient(90deg, #ff9966, #ff5e62);
+        }
+
+        :root[data-theme="neon"] {
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #434343 100%);
+            --card-bg: rgba(0, 0, 0, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #00ff9d;
+            --shadow-color: rgba(0, 255, 157, 0.2);
+            --header-bg: rgba(0, 0, 0, 0.95);
+            --accent-gradient: linear-gradient(90deg, #00ff9d, #00b8ff);
+        }
+
+        /* Анимации для фона */
+        @keyframes spaceAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes oceanAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes forestAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes sunsetAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 5px var(--text-secondary), 0 0 10px var(--text-secondary); }
+            50% { box-shadow: 0 0 20px var(--text-secondary), 0 0 30px var(--text-secondary); }
+            100% { box-shadow: 0 0 5px var(--text-secondary), 0 0 10px var(--text-secondary); }
+        }
+
+        /* Применение анимаций к темам */
+        [data-theme="space"] body {
+            background-size: 400% 400%;
+            animation: spaceAnimation 15s ease infinite;
+        }
+
+        [data-theme="ocean"] body {
+            background-size: 200% 200%;
+            animation: oceanAnimation 10s ease infinite;
+        }
+
+        [data-theme="forest"] body {
+            background-size: 400% 400%;
+            animation: forestAnimation 20s ease infinite;
+        }
+
+        [data-theme="sunset"] body {
+            background-size: 200% 200%;
+            animation: sunsetAnimation 15s ease infinite;
+        }
+
+        [data-theme="neon"] .student-card {
+            animation: neonGlow 2s ease-in-out infinite;
+        }
+
+        /* Стили для селектора тем */
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .theme-button {
+            background: var(--card-bg);
+            border: 2px solid var(--text-primary);
+            color: var(--text-primary);
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-button i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .theme-button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .theme-button.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+            transition: background 0.3s ease;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .theme-switch i {
+            font-size: 1.2em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--header-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        h1 {
+            color: var(--text-primary);
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px var(--shadow-color);
+            transition: color 0.3s ease;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-card h2 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .category-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .content-section {
+            display: none;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px var(--shadow-color);
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .student-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .student-card:hover::before {
+            opacity: 1;
+        }
+
+        .student-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .student-card:hover .student-photo {
+            transform: scale(1.05);
+        }
+
+        .student-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .student-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        .student-info {
+            color: var(--text-secondary);
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 20px;
+            }
+
+            .student-photo {
+                width: 150px;
+                height: 150px;
+            }
+
+            .theme-selector {
+                top: 10px;
+                left: 10px;
+                padding: 10px;
+            }
+
+            .theme-button {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Стили для модальной галереи */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .gallery-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .gallery-content {
+            position: relative;
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .gallery-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item img.error {
+            opacity: 0.5;
+        }
+
+        .gallery-item::after {
+            content: 'Фото недоступно';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item img.error + .gallery-item::after {
+            opacity: 1;
+        }
+
+        .gallery-back {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .gallery-back:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .gallery-title {
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .gallery-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .gallery-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 1200px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .gallery-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .gallery-title {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-back {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-selector">
+        <button class="theme-button" onclick="changeTheme('light')" data-theme="light">
+            <i class="fas fa-sun"></i> Светлая
+        </button>
+        <button class="theme-button" onclick="changeTheme('dark')" data-theme="dark">
+            <i class="fas fa-moon"></i> Тёмная
+        </button>
+        <button class="theme-button" onclick="changeTheme('space')" data-theme="space">
+            <i class="fas fa-rocket"></i> Космос
+        </button>
+        <button class="theme-button" onclick="changeTheme('ocean')" data-theme="ocean">
+            <i class="fas fa-water"></i> Океан
+        </button>
+        <button class="theme-button" onclick="changeTheme('forest')" data-theme="forest">
+            <i class="fas fa-tree"></i> Лес
+        </button>
+        <button class="theme-button" onclick="changeTheme('sunset')" data-theme="sunset">
+            <i class="fas fa-sun"></i> Закат
+        </button>
+        <button class="theme-button" onclick="changeTheme('neon')" data-theme="neon">
+            <i class="fas fa-lightbulb"></i> Неон
+        </button>
+    </div>
+    <button class="theme-switch" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+        <span>Сменить тему</span>
+    </button>
+    <div class="container">
+        <header>
+            <h1>9 класс - Наша визитка</h1>
+        </header>
+
+        <div class="categories">
+            <div class="category-card" onclick="showSection('about')">
+                <h2>О нашем классе</h2>
+                <p>Узнайте больше о нашем дружном коллективе</p>
+            </div>
+            <div class="category-card" onclick="showSection('achievements')">
+                <h2>Достижения</h2>
+                <p>Наши победы и успехи</p>
+            </div>
+            <div class="category-card" onclick="showSection('events')">
+                <h2>Мероприятия</h2>
+                <p>Фото и рассказы о наших мероприятиях</p>
+            </div>
+            <div class="category-card" onclick="showSection('gallery')">
+                <h2>Галерея</h2>
+                <p>Фотографии нашего класса</p>
+            </div>
+        </div>
+
+        <div id="about" class="content-section">
+            <button class="back-button" onclick="hideSections()">← Назад</button>
+            <h2>О нашем классе</h2>
+            <p>Мы - дружный 9 класс! В нашем классе учатся талантливые и целеустремленные ребята. Мы всегда поддерживаем друг друга и вместе достигаем новых высот.</p>
+        </div>
+
+        <div id="achievements" class="content-section">
+            <button class="back-button" onclick="hideSections()">← Назад</button>
+            <h2>Наши достижения</h2>
+            <p>Здесь будут отображаться наши победы в олимпиадах, конкурсах и спортивных соревнованиях.</p>
+        </div>
+
+        <div id="events" class="content-section">
+            <button class="back-button" onclick="hideSections()">← Назад</button>
+            <h2>Мероприятия</h2>
+            <p>Рассказы о наших поездках, праздниках и других интересных событиях.</p>
+        </div>
+
+        <div id="gallery" class="content-section">
+            <button class="back-button" onclick="hideSections()">← Назад</button>
+            <h2>Галерея нашего класса</h2>
+            <p>Знакомьтесь с нашим дружным коллективом!</p>
+            
+            <div style="margin: 40px 0;"></div>
+            
+            <div class="gallery-grid">
+                <div class="student-card">
+                    <div class="student-photo"><img src="mursa.jpg" alt="Мурса Арина" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Мурса Арина</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="rudic.jpg" alt="Рудик Анастасия" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Рудик Анастасия</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="drob.jpg" alt="Дробицкая Дарья" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Дробицкая Дарья</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="plotnik.jpg" alt="Плотников Сергей" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Плотников Сергей</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="melnic.jpg" alt="Мельник Тимофей" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Мельник Тимофей</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="zotov.jpg" alt="Зотов Артем" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Зотов Артем</div>
+                    <div class="student-info">2008 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="brudari.JPG" alt="Брударь Максим" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Брударь Максим</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="savcenco.jpg" alt="Савченко Сережа" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Савченко Сережа</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="raisher.jpg" alt="Раимишер Михаил" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Раимишер Михаил</div>
+                    <div class="student-info">2010 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="volcov.jpg" alt="Волков Александр" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Волков Александр</div>
+                    <div class="student-info">2009 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="mir.jpg" alt="Яцышена Мирослава" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Яцышена Мирослава</div>
+                    <div class="student-info">2010 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo"><img src="slobod.jpg" alt="Слободской Ярослав" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Слободской Ярослав</div>
+                    <div class="student-info">2010 год</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 12</div>
+                    <div class="student-name">Ученик 12</div>
+                    <div class="student-info">Спортсмен</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 13</div>
+                    <div class="student-name">Ученик 13</div>
+                    <div class="student-info">Активист</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 14</div>
+                    <div class="student-name">Ученик 14</div>
+                    <div class="student-info">Отличник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 15</div>
+                    <div class="student-name">Ученик 15</div>
+                    <div class="student-info">Творческая личность</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 16</div>
+                    <div class="student-name">Ученик 16</div>
+                    <div class="student-info">Участник конкурсов</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 17</div>
+                    <div class="student-name">Ученик 17</div>
+                    <div class="student-info">Спортсмен</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 18</div>
+                    <div class="student-name">Ученик 18</div>
+                    <div class="student-info">Активный участник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 19</div>
+                    <div class="student-name">Ученик 19</div>
+                    <div class="student-info">Отличник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 20</div>
+                    <div class="student-name">Ученик 20</div>
+                    <div class="student-info">Творческая личность</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 21</div>
+                    <div class="student-name">Ученик 21</div>
+                    <div class="student-info">Участник олимпиад</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 22</div>
+                    <div class="student-name">Ученик 22</div>
+                    <div class="student-info">Спортсмен</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 23</div>
+                    <div class="student-name">Ученик 23</div>
+                    <div class="student-info">Активист</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 24</div>
+                    <div class="student-name">Ученик 24</div>
+                    <div class="student-info">Отличник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 25</div>
+                    <div class="student-name">Ученик 25</div>
+                    <div class="student-info">Творческая личность</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 26</div>
+                    <div class="student-name">Ученик 26</div>
+                    <div class="student-info">Участник конкурсов</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 27</div>
+                    <div class="student-name">Ученик 27</div>
+                    <div class="student-info">Спортсмен</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 28</div>
+                    <div class="student-name">Ученик 28</div>
+                    <div class="student-info">Активный участник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 29</div>
+                    <div class="student-name">Ученик 29</div>
+                    <div class="student-info">Отличник</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 30</div>
+                    <div class="student-name">Ученик 30</div>
+                    <div class="student-info">Творческая личность</div>
+                </div>
+                <div class="student-card">
+                    <div class="student-photo">Фото 31</div>
+                    <div class="student-name">Ученик 31</div>
+                    <div class="student-info">Участник олимпиад</div>
+                </div>
+            </div>
+        </div>
+
+    <div class="gallery-modal">
+        <div class="gallery-content">
+            <button class="gallery-close" onclick="closeGallery()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="gallery-header">
+                <button class="gallery-back" onclick="closeGallery()">
+                    <i class="fas fa-arrow-left"></i>
+                    Назад к списку
+                </button>
+                <span class="gallery-title"></span>
+            </div>
+            <div class="gallery-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        function changeTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.theme-button').forEach(button => {
+                button.classList.remove('active');
+                if (button.getAttribute('data-theme') === theme) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        // Загружаем сохраненную тему при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            changeTheme(savedTheme);
+        });
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            
+            // Обновляем иконку
+            const icon = document.querySelector('.theme-switch i');
+            icon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            
+            // Сохраняем выбор темы
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function showSection(sectionId) {
+            // Скрываем все секции
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Показываем выбранную секцию
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function hideSections() {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+        }
+
+        // Функции для галереи
+        const studentAlbums = {
+            'mursa': {
+                name: 'Мурса Арина',
+                photos: [
+                    'mursa.jpg',
+                    'mursa_1.jpg',
+                    'mursa_2.jpg',
+                    'mursa_3.jpg',
+                    'mursa_4.jpg',
+                    'mursa_5.jpg',
+                    'mursa_6.jpg',
+                    'mursa_7.jpg',
+                    'mursa_8.jpg',
+                    'mursa_9.jpg'
+                ]
+            },
+            'rudic': {
+                name: 'Рудик Анастасия',
+                photos: [
+                    'rudic.jpg',
+                    'rudic_1.jpg',
+                    'rudic_2.jpg',
+                    'rudic_3.jpg',
+                    'rudic_4.jpg',
+                    'rudic_5.jpg',
+                    'rudic_6.jpg',
+                    'rudic_7.jpg',
+                    'rudic_8.jpg',
+                    'rudic_9.jpg'
+                ]
+            },
+            'drob': {
+                name: 'Дробицкая Дарья',
+                photos: [
+                    'drob.jpg',
+                    'drob_1.jpg',
+                    'drob_2.jpg',
+                    'drob_3.jpg',
+                    'drob_4.jpg',
+                    'drob_5.jpg',
+                    'drob_6.jpg',
+                    'drob_7.jpg',
+                    'drob_8.jpg',
+                    'drob_9.jpg'
+                ]
+            },
+            'plotnik': {
+                name: 'Плотников Сергей',
+                photos: [
+                    'plotnik.jpg',
+                    'plotnik_1.jpg',
+                    'plotnik_2.jpg',
+                    'plotnik_3.jpg',
+                    'plotnik_4.jpg',
+                    'plotnik_5.jpg',
+                    'plotnik_6.jpg',
+                    'plotnik_7.jpg',
+                    'plotnik_8.jpg',
+                    'plotnik_9.jpg'
+                ]
+            },
+            'melnic': {
+                name: 'Мельник Тимофей',
+                photos: [
+                    'melnic.jpg',
+                    'melnic_1.jpg',
+                    'melnic_2.jpg',
+                    'melnic_3.jpg',
+                    'melnic_4.jpg',
+                    'melnic_5.jpg',
+                    'melnic_6.jpg',
+                    'melnic_7.jpg',
+                    'melnic_8.jpg',
+                    'melnic_9.jpg'
+                ]
+            },
+            'zotov': {
+                name: 'Зотов Артем',
+                photos: [
+                    'zotov.jpg',
+                    'zotov_1.jpg',
+                    'zotov_2.jpg',
+                    'zotov_3.jpg',
+                    'zotov_4.jpg',
+                    'zotov_5.jpg',
+                    'zotov_6.jpg',
+                    'zotov_7.jpg',
+                    'zotov_8.jpg',
+                    'zotov_9.jpg'
+                ]
+            },
+            'brudari': {
+                name: 'Брударь Максим',
+                photos: [
+                    'brudari.JPG',
+                    'brudari_1.jpg',
+                    'brudari_2.jpg',
+                    'brudari_3.jpg',
+                    'brudari_4.jpg',
+                    'brudari_5.jpg',
+                    'brudari_6.jpg',
+                    'brudari_7.jpg',
+                    'brudari_8.jpg',
+                    'brudari_9.jpg'
+                ]
+            },
+            'savcenco': {
+                name: 'Савченко Сережа',
+                photos: [
+                    'savcenco.jpg',
+                    'savcenco_1.jpg',
+                    'savcenco_2.jpg',
+                    'savcenco_3.jpg',
+                    'savcenco_4.jpg',
+                    'savcenco_5.jpg',
+                    'savcenco_6.jpg',
+                    'savcenco_7.jpg',
+                    'savcenco_8.jpg',
+                    'savcenco_9.jpg'
+                ]
+            },
+            'raisher': {
+                name: 'Раимишер Михаил',
+                photos: [
+                    'raisher.jpg',
+                    'raisher_1.jpg',
+                    'raisher_2.jpg',
+                    'raisher_3.jpg',
+                    'raisher_4.jpg',
+                    'raisher_5.jpg',
+                    'raisher_6.jpg',
+                    'raisher_7.jpg',
+                    'raisher_8.jpg',
+                    'raisher_9.jpg'
+                ]
+            },
+            'volcov': {
+                name: 'Волков Александр',
+                photos: [
+                    'volcov.jpg',
+                    'volcov_1.jpg',
+                    'volcov_2.jpg',
+                    'volcov_3.jpg',
+                    'volcov_4.jpg',
+                    'volcov_5.jpg',
+                    'volcov_6.jpg',
+                    'volcov_7.jpg',
+                    'volcov_8.jpg',
+                    'volcov_9.jpg'
+                ]
+            }
+        };
+
+        function openGallery(studentId) {
+            const album = studentAlbums[studentId];
+            if (!album) return;
+
+            const modal = document.querySelector('.gallery-modal');
+            const header = document.querySelector('.gallery-title');
+            const grid = document.querySelector('.gallery-grid');
+            
+            header.textContent = `Альбом: ${album.name}`;
+            grid.innerHTML = '';
+            
+            album.photos.forEach(photo => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = album.name;
+                
+                // Обработка ошибок загрузки изображения
+                img.onerror = function() {
+                    this.classList.add('error');
+                    this.src = 'placeholder.jpg'; // Запасное изображение
+                };
+                
+                item.appendChild(img);
+                grid.appendChild(item);
+            });
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
+
+            // Добавляем обработчик клавиш
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        function closeGallery() {
+            const modal = document.querySelector('.gallery-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Разблокируем прокрутку страницы
+            document.removeEventListener('keydown', handleKeyPress);
+            
+            // Прокручиваем страницу вверх, чтобы показать список учеников
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Escape') {
+                closeGallery();
+            }
+        }
+
+        // Добавляем обработчики клика на фотографии
+        document.addEventListener('DOMContentLoaded', () => {
+            const studentPhotos = document.querySelectorAll('.student-photo img');
+            studentPhotos.forEach(photo => {
+                const studentId = photo.src.split('/').pop().split('.')[0];
+                photo.addEventListener('click', () => openGallery(studentId));
+            });
+
+            // Закрытие галереи при клике вне контента
+            document.querySelector('.gallery-modal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('gallery-modal')) {
+                    closeGallery();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
