@@ -196,6 +196,7 @@
             color: var(--text-primary);
             margin-bottom: 20px;
             text-align: center;
+            padding-top: 20px;
         }
 
         .theme-button {
@@ -211,12 +212,38 @@
             align-items: center;
             gap: 12px;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .theme-button:hover::before {
+            opacity: 0.1;
         }
 
         .theme-button i {
             width: 24px;
             text-align: center;
             font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-button span {
+            position: relative;
+            z-index: 1;
         }
 
         .theme-button:hover {
@@ -230,6 +257,10 @@
             color: white;
         }
 
+        .theme-button.active::before {
+            opacity: 0;
+        }
+
         /* Адаптивные стили для меню */
         @media (max-width: 768px) {
             .menu-button {
@@ -241,11 +272,22 @@
 
             .theme-selector {
                 width: 250px;
+                padding: 15px;
+            }
+
+            .theme-selector::before {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+                padding-top: 15px;
             }
 
             .theme-button {
                 padding: 10px 15px;
                 font-size: 0.9em;
+            }
+
+            .theme-button i {
+                font-size: 1.1em;
             }
         }
 
@@ -259,13 +301,78 @@
 
             .theme-selector {
                 width: 220px;
-                padding: 15px;
+                padding: 12px;
+            }
+
+            .theme-selector::before {
+                font-size: 1em;
+                margin-bottom: 12px;
+                padding-top: 12px;
             }
 
             .theme-button {
                 padding: 8px 12px;
                 font-size: 0.85em;
+                gap: 8px;
             }
+
+            .theme-button i {
+                font-size: 1em;
+                width: 20px;
+            }
+        }
+
+        /* Улучшения для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .theme-selector {
+                width: 200px;
+                padding: 10px;
+            }
+
+            .theme-button {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Улучшения для ландшафтной ориентации на мобильных */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .theme-selector {
+                padding-top: 60px;
+            }
+
+            .theme-selector::before {
+                position: absolute;
+                top: 10px;
+                left: 0;
+                right: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .theme-button {
+                padding: 6px 10px;
+            }
+        }
+
+        /* Добавляем затемнение фона при открытом меню */
+        .theme-selector::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .theme-selector.active::after {
+            opacity: 1;
+            visibility: visible;
         }
 
         * {
@@ -655,41 +762,6 @@
             }
         }
 
-        /* Улучшения для очень маленьких экранов */
-        @media (max-width: 360px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .student-photo {
-                width: 150px;
-                height: 150px;
-            }
-
-            .theme-selector {
-                left: 5px;
-                right: 5px;
-                width: auto;
-            }
-        }
-
-        /* Улучшения для ландшафтной ориентации на мобильных */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .theme-selector {
-                flex-direction: row;
-                flex-wrap: wrap;
-                max-height: none;
-            }
-
-            .theme-button {
-                width: auto;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
         /* Стили для модальной галереи */
         .gallery-modal {
             display: none;
@@ -874,25 +946,32 @@
     </button>
     <div class="theme-selector">
         <button class="theme-button" onclick="changeTheme('light')" data-theme="light">
-            <i class="fas fa-sun"></i> Светлая
+            <i class="fas fa-sun"></i>
+            <span>Светлая</span>
         </button>
         <button class="theme-button" onclick="changeTheme('dark')" data-theme="dark">
-            <i class="fas fa-moon"></i> Тёмная
+            <i class="fas fa-moon"></i>
+            <span>Тёмная</span>
         </button>
         <button class="theme-button" onclick="changeTheme('space')" data-theme="space">
-            <i class="fas fa-rocket"></i> Космос
+            <i class="fas fa-rocket"></i>
+            <span>Космос</span>
         </button>
         <button class="theme-button" onclick="changeTheme('ocean')" data-theme="ocean">
-            <i class="fas fa-water"></i> Океан
+            <i class="fas fa-water"></i>
+            <span>Океан</span>
         </button>
         <button class="theme-button" onclick="changeTheme('forest')" data-theme="forest">
-            <i class="fas fa-tree"></i> Лес
+            <i class="fas fa-tree"></i>
+            <span>Лес</span>
         </button>
         <button class="theme-button" onclick="changeTheme('sunset')" data-theme="sunset">
-            <i class="fas fa-sun"></i> Закат
+            <i class="fas fa-sun"></i>
+            <span>Закат</span>
         </button>
         <button class="theme-button" onclick="changeTheme('neon')" data-theme="neon">
-            <i class="fas fa-lightbulb"></i> Неон
+            <i class="fas fa-lightbulb"></i>
+            <span>Неон</span>
         </button>
     </div>
     <div class="container">
