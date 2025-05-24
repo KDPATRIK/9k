@@ -446,6 +446,7 @@
             margin-bottom: 10px;
             text-shadow: 1px 1px 2px var(--shadow-color);
             transition: color 0.3s ease;
+            animation: titleAnimation 3s ease-in-out infinite;
         }
 
         .categories {
@@ -493,6 +494,8 @@
             font-size: 1.5em;
             font-weight: 600;
             transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .category-card p {
@@ -500,6 +503,8 @@
             line-height: 1.6;
             font-size: 1.1em;
             transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .content-section {
@@ -557,6 +562,22 @@
             opacity: 1;
         }
 
+        .student-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .student-card:hover::after {
+            opacity: 1;
+        }
+
         .student-photo {
             width: 180px;
             height: 180px;
@@ -591,6 +612,13 @@
             color: var(--text-secondary);
             font-size: 1em;
             transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .student-card:hover .student-info {
+            transform: translateY(-5px);
         }
 
         .content-section.active {
@@ -787,11 +815,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 2000;
             opacity: 0;
             transition: opacity 0.3s ease;
             overflow-y: auto;
+            will-change: opacity;
+            backdrop-filter: blur(10px);
         }
 
         .gallery-modal.active {
@@ -808,6 +838,7 @@
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
+            animation: fadeIn 0.3s ease;
         }
 
         .gallery-header {
@@ -819,59 +850,70 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 15px;
             z-index: 1;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+            width: 100%;
         }
 
         .gallery-item {
             aspect-ratio: 1;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.1);
             position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease;
+            animation-fill-mode: both;
         }
 
         .gallery-item:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
         .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
         }
 
         .gallery-item img.error {
             opacity: 0.5;
         }
 
-        .gallery-item::after {
-            content: 'Фото недоступно';
+        .gallery-item::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 0.9em;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 1;
         }
 
-        .gallery-item img.error + .gallery-item::after {
+        .gallery-item:hover::before {
             opacity: 1;
         }
 
@@ -879,7 +921,7 @@
             background: rgba(255, 255, 255, 0.1);
             border: none;
             color: white;
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
@@ -888,6 +930,7 @@
             font-size: 0.9em;
             transition: all 0.3s ease;
             white-space: nowrap;
+            backdrop-filter: blur(5px);
         }
 
         .gallery-back:hover {
@@ -900,6 +943,7 @@
             font-size: 1.2em;
             text-align: center;
             flex-grow: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .gallery-close {
@@ -919,39 +963,257 @@
             font-size: 20px;
             transition: all 0.3s ease;
             z-index: 2;
+            backdrop-filter: blur(5px);
         }
 
         .gallery-close:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        @media (max-width: 1200px) {
-            .gallery-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            transform: scale(1.1) rotate(90deg);
         }
 
         @media (max-width: 768px) {
             .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             .gallery-header {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
+                padding: 10px;
             }
             .gallery-title {
                 font-size: 1em;
+            }
+            .gallery-content {
+                padding: 10px;
             }
         }
 
         @media (max-width: 480px) {
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
             }
             .gallery-back {
-                padding: 6px 12px;
+                padding: 8px 15px;
                 font-size: 0.8em;
+            }
+            .gallery-close {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        /* Добавляем новые стили */
+        .student-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .student-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .student-card:hover::after {
+            opacity: 1;
+        }
+
+        .student-info {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .student-card:hover .student-info {
+            transform: translateY(-5px);
+        }
+
+        .category-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-card h2 {
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card p {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Добавляем анимацию для заголовка */
+        @keyframes titleAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        h1 {
+            animation: titleAnimation 3s ease-in-out infinite;
+        }
+
+        /* Улучшаем стили для модальной галереи */
+        .gallery-modal {
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-item {
+            position: relative;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Добавляем стили для кнопок навигации */
+        .navigation-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: var(--card-bg);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Добавляем стили для поиска */
+        .search-container {
+            position: relative;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--text-primary);
+            border-radius: 25px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-gradient);
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        /* Добавляем стили для фильтров */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 8px 15px;
+            border: 2px solid var(--text-primary);
+            border-radius: 20px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .navigation-buttons {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .nav-button {
+                width: 35px;
+                height: 35px;
+            }
+
+            .search-container {
+                margin: 10px auto;
+            }
+
+            .search-input {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .filters {
+                gap: 5px;
+            }
+
+            .filter-button {
+                padding: 6px 12px;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -996,6 +1258,17 @@
         <header>
             <h1>9 класс - Наша визитка</h1>
         </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Поиск ученика..." oninput="searchStudents(this.value)">
+        </div>
+
+        <div class="filters">
+            <button class="filter-button active" onclick="filterStudents('all')">Все</button>
+            <button class="filter-button" onclick="filterStudents('2008')">2008</button>
+            <button class="filter-button" onclick="filterStudents('2009')">2009</button>
+            <button class="filter-button" onclick="filterStudents('2010')">2010</button>
+        </div>
 
         <div class="categories">
             <div class="category-card" onclick="showSection('about')">
@@ -1219,6 +1492,12 @@
             </div>
             <div class="gallery-grid"></div>
         </div>
+    </div>
+
+    <div class="navigation-buttons">
+        <button class="nav-button" onclick="scrollToTop()">
+            <i class="fas fa-arrow-up"></i>
+        </button>
     </div>
 
     <script>
@@ -1480,7 +1759,10 @@
 
         function openGallery(studentId) {
             const album = studentAlbums[studentId];
-            if (!album) return;
+            if (!album) {
+                console.log('Album not found for:', studentId);
+                return;
+            }
 
             const modal = document.querySelector('.gallery-modal');
             const header = document.querySelector('.gallery-title');
@@ -1489,17 +1771,20 @@
             header.textContent = `Альбом: ${album.name}`;
             grid.innerHTML = '';
             
-            album.photos.forEach(photo => {
+            // Создаем элементы галереи
+            album.photos.forEach((photo, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
+                item.style.animationDelay = `${index * 0.1}s`;
+                
                 const img = document.createElement('img');
                 img.src = photo;
                 img.alt = album.name;
                 
-                // Обработка ошибок загрузки изображения
                 img.onerror = function() {
+                    console.log('Error loading image:', photo);
+                    this.src = 'placeholder.jpg';
                     this.classList.add('error');
-                    this.src = 'placeholder.jpg'; // Запасное изображение
                 };
                 
                 item.appendChild(img);
@@ -1507,23 +1792,21 @@
             });
             
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
-
-            // Добавляем обработчик клавиш
+            document.body.style.overflow = 'hidden';
             document.addEventListener('keydown', handleKeyPress);
         }
 
         function closeGallery() {
             const modal = document.querySelector('.gallery-modal');
             modal.classList.remove('active');
-            document.body.style.overflow = ''; // Разблокируем прокрутку страницы
+            document.body.style.overflow = '';
             document.removeEventListener('keydown', handleKeyPress);
             
-            // Прокручиваем страницу вверх, чтобы показать список учеников
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            // Прокручиваем к началу списка учеников
+            const gallerySection = document.getElementById('gallery');
+            if (gallerySection) {
+                gallerySection.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function handleKeyPress(e) {
@@ -1532,20 +1815,90 @@
             }
         }
 
-        // Добавляем обработчики клика на фотографии
+        // Инициализация обработчиков событий
         document.addEventListener('DOMContentLoaded', () => {
+            // Обработчики для фотографий учеников
             const studentPhotos = document.querySelectorAll('.student-photo img');
             studentPhotos.forEach(photo => {
-                const studentId = photo.src.split('/').pop().split('.')[0];
-                photo.addEventListener('click', () => openGallery(studentId));
+                photo.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const studentId = photo.src.split('/').pop().split('.')[0].toLowerCase();
+                    if (studentAlbums[studentId]) {
+                        openGallery(studentId);
+                    }
+                });
             });
 
             // Закрытие галереи при клике вне контента
-            document.querySelector('.gallery-modal').addEventListener('click', (e) => {
-                if (e.target.classList.contains('gallery-modal')) {
+            const modal = document.querySelector('.gallery-modal');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
                     closeGallery();
                 }
             });
+
+            // Обработчик для кнопки закрытия
+            const closeButton = document.querySelector('.gallery-close');
+            closeButton.addEventListener('click', closeGallery);
+
+            // Обработчик для кнопки "Назад"
+            const backButton = document.querySelector('.gallery-back');
+            backButton.addEventListener('click', closeGallery);
+        });
+
+        // Добавляем новые функции
+        function searchStudents(query) {
+            const cards = document.querySelectorAll('.student-card');
+            query = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.student-name').textContent.toLowerCase();
+                const info = card.querySelector('.student-info').textContent.toLowerCase();
+                
+                if (name.includes(query) || info.includes(query)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterStudents(year) {
+            const cards = document.querySelectorAll('.student-card');
+            const buttons = document.querySelectorAll('.filter-button');
+            
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                if (button.textContent === year || (year === 'all' && button.textContent === 'Все')) {
+                    button.classList.add('active');
+                }
+            });
+            
+            cards.forEach(card => {
+                const info = card.querySelector('.student-info').textContent;
+                if (year === 'all' || info.includes(year)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Добавляем обработчик для кнопки прокрутки вверх
+        window.addEventListener('scroll', () => {
+            const scrollButton = document.querySelector('.nav-button');
+            if (window.scrollY > 300) {
+                scrollButton.style.opacity = '1';
+            } else {
+                scrollButton.style.opacity = '0';
+            }
         });
     </script>
 </body>
