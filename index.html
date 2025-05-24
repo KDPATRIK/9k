@@ -2433,6 +2433,38 @@
         });
 
         // Функции для чата
+        let ws;
+
+        function initWebSocket() {
+            ws = new WebSocket('ws://' + window.location.host);
+
+            ws.onopen = () => {
+                console.log('Connected to chat server');
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'history') {
+                    // Очищаем чат и загружаем историю
+                    const chatMessages = document.getElementById('chatMessages');
+                    chatMessages.innerHTML = '';
+                    data.messages.forEach(msg => {
+                        addMessage(msg.text, 'guest', msg.time);
+                    });
+                } else if (data.type === 'message') {
+                    // Добавляем новое сообщение
+                    addMessage(data.message.text, 'guest', data.message.time);
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('Disconnected from chat server');
+                // Пробуем переподключиться через 5 секунд
+                setTimeout(initWebSocket, 5000);
+            };
+        }
+
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
@@ -2443,79 +2475,31 @@
                 return;
             }
             
-            // Проверка частоты отправки
-            const lastMessageTime = localStorage.getItem('lastMessageTime');
-            const now = Date.now();
-            if (lastMessageTime && now - parseInt(lastMessageTime) < 1000) {
-                alert('Пожалуйста, подождите 1 секунду перед отправкой следующего сообщения.');
-                return;
-            }
-            
-            if (message) {
-                addMessage(message, 'guest');
+            if (message && ws && ws.readyState === WebSocket.OPEN) {
+                // Отправляем сообщение на сервер
+                ws.send(JSON.stringify({ text: message }));
                 input.value = '';
-                
-                // Сохраняем сообщение в localStorage
-                saveMessage(message);
-                localStorage.setItem('lastMessageTime', now.toString());
-                
-                // Автоматическая прокрутка к последнему сообщению
-                const chatMessages = document.getElementById('chatMessages');
-                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        function addMessage(text, type) {
+        function addMessage(text, type, time) {
             const chatMessages = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
             
-            const time = new Date().toLocaleTimeString();
+            const messageTime = time ? new Date(time).toLocaleTimeString() : new Date().toLocaleTimeString();
             messageDiv.innerHTML = `
                 <div class="message-text">${text}</div>
-                <div class="message-time">${time}</div>
+                <div class="message-time">${messageTime}</div>
             `;
             
             chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function saveMessage(message) {
-            let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-            messages.push({
-                text: message,
-                time: new Date().toISOString()
-            });
-            
-            // Ограничиваем количество сохраненных сообщений
-            if (messages.length > 50) {
-                messages = messages.slice(-50);
-            }
-            
-            localStorage.setItem('chatMessages', JSON.stringify(messages));
-        }
-
-        function loadMessages() {
-            const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-            messages.forEach(msg => {
-                const time = new Date(msg.time).toLocaleTimeString();
-                addMessage(msg.text, 'guest');
-            });
-        }
-
-        // Загружаем сообщения при открытии чата
+        // Инициализируем WebSocket при загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
-            const chatSection = document.getElementById('chat');
-            if (chatSection) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            loadMessages();
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-                observer.observe(chatSection);
-            }
+            initWebSocket();
         });
 
         // Обработка нажатия Enter в поле ввода
