@@ -132,41 +132,91 @@
             animation: neonGlow 2s ease-in-out infinite;
         }
 
-        /* Стили для селектора тем */
-        .theme-selector {
+        /* Стили для кнопки меню */
+        .menu-button {
             position: fixed;
             top: 20px;
             left: 20px;
+            z-index: 1001;
+            background: var(--card-bg);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.1);
+        }
+
+        .menu-button i {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-button.active i {
+            transform: rotate(90deg);
+        }
+
+        /* Обновленные стили для селектора тем */
+        .theme-selector {
+            position: fixed;
+            top: 0;
+            left: -300px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
             gap: 8px;
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 15px;
+            padding: 20px;
+            border-radius: 0 15px 15px 0;
             box-shadow: 0 5px 15px var(--shadow-color);
-            max-height: calc(100vh - 40px);
+            height: 100vh;
+            width: 280px;
+            transition: left 0.3s ease;
             overflow-y: auto;
+        }
+
+        .theme-selector.active {
+            left: 0;
+        }
+
+        .theme-selector::before {
+            content: 'Выберите тему';
+            display: block;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .theme-button {
             background: var(--card-bg);
             border: 2px solid var(--text-primary);
             color: var(--text-primary);
-            padding: 8px 15px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9em;
-            white-space: nowrap;
+            font-size: 1em;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            width: 100%;
         }
 
         .theme-button i {
-            width: 20px;
+            width: 24px;
             text-align: center;
+            font-size: 1.2em;
         }
 
         .theme-button:hover {
@@ -178,6 +228,44 @@
             background: var(--accent-gradient);
             border-color: transparent;
             color: white;
+        }
+
+        /* Адаптивные стили для меню */
+        @media (max-width: 768px) {
+            .menu-button {
+                top: 15px;
+                left: 15px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .theme-selector {
+                width: 250px;
+            }
+
+            .theme-button {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-button {
+                top: 10px;
+                left: 10px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .theme-selector {
+                width: 220px;
+                padding: 15px;
+            }
+
+            .theme-button {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
         }
 
         * {
@@ -194,32 +282,9 @@
             transition: background 0.3s ease;
         }
 
+        /* Удаляем стили для кнопки смены темы */
         .theme-switch {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--card-bg);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px var(--shadow-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-primary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .theme-switch:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow-color);
-        }
-
-        .theme-switch i {
-            font-size: 1.2em;
+            display: none;
         }
 
         .container {
@@ -429,20 +494,171 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                padding: 10px;
             }
-            
+
             header {
-                padding: 20px;
+                padding: 15px;
+                margin-bottom: 20px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+            }
+
+            .categories {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .category-card {
+                padding: 15px;
+            }
+
+            .category-card h2 {
+                font-size: 1.3em;
+            }
+
+            .category-card p {
+                font-size: 1em;
+            }
+
+            .content-section {
+                padding: 20px;
             }
 
             .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .student-card {
+                padding: 15px;
+            }
+
+            .student-photo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .student-name {
+                font-size: 1.1em;
+                margin-top: 10px;
+            }
+
+            .student-info {
+                font-size: 0.9em;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+
+            .theme-selector {
+                top: 10px;
+                left: 10px;
+                padding: 8px;
+                gap: 5px;
+            }
+
+            .theme-button {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+
+            .theme-button i {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .student-photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .student-name {
+                font-size: 1em;
+            }
+
+            .student-info {
+                font-size: 0.8em;
+            }
+
+            .theme-selector {
+                flex-direction: column;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            .theme-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Стили для модальной галереи на мобильных */
+            .gallery-modal .gallery-content {
+                padding: 10px;
+            }
+
+            .gallery-header {
+                padding: 10px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .gallery-title {
+                font-size: 1em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 0 10px;
+            }
+
+            .gallery-back {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .gallery-close {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        /* Улучшения для планшетов */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .student-photo {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        /* Улучшения для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
             }
 
             .student-photo {
@@ -451,14 +667,26 @@
             }
 
             .theme-selector {
-                top: 10px;
-                left: 10px;
-                padding: 10px;
+                left: 5px;
+                right: 5px;
+                width: auto;
+            }
+        }
+
+        /* Улучшения для ландшафтной ориентации на мобильных */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .theme-selector {
+                flex-direction: row;
+                flex-wrap: wrap;
+                max-height: none;
             }
 
             .theme-button {
-                padding: 6px 12px;
-                font-size: 0.8em;
+                width: auto;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -641,6 +869,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <button class="menu-button" onclick="toggleThemeMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
     <div class="theme-selector">
         <button class="theme-button" onclick="changeTheme('light')" data-theme="light">
             <i class="fas fa-sun"></i> Светлая
@@ -664,10 +895,6 @@
             <i class="fas fa-lightbulb"></i> Неон
         </button>
     </div>
-    <button class="theme-switch" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-        <span>Сменить тему</span>
-    </button>
     <div class="container">
         <header>
             <h1>9 класс - Наша визитка</h1>
@@ -898,6 +1125,36 @@
     </div>
 
     <script>
+        // Добавляем функцию для переключения меню тем
+        function toggleThemeMenu() {
+            const menuButton = document.querySelector('.menu-button');
+            const themeSelector = document.querySelector('.theme-selector');
+            
+            menuButton.classList.toggle('active');
+            themeSelector.classList.toggle('active');
+            
+            // Меняем иконку при открытии/закрытии
+            const icon = menuButton.querySelector('i');
+            if (menuButton.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        }
+
+        // Закрываем меню при клике вне его
+        document.addEventListener('click', (e) => {
+            const menuButton = document.querySelector('.menu-button');
+            const themeSelector = document.querySelector('.theme-selector');
+            
+            if (!menuButton.contains(e.target) && !themeSelector.contains(e.target)) {
+                menuButton.classList.remove('active');
+                themeSelector.classList.remove('active');
+                menuButton.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // Обновляем функцию changeTheme
         function changeTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
@@ -909,6 +1166,13 @@
                     button.classList.add('active');
                 }
             });
+
+            // Закрываем меню после выбора темы
+            const menuButton = document.querySelector('.menu-button');
+            const themeSelector = document.querySelector('.theme-selector');
+            menuButton.classList.remove('active');
+            themeSelector.classList.remove('active');
+            menuButton.querySelector('i').className = 'fas fa-bars';
         }
 
         // Загружаем сохраненную тему при загрузке страницы
@@ -916,20 +1180,6 @@
             const savedTheme = localStorage.getItem('theme') || 'light';
             changeTheme(savedTheme);
         });
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', newTheme);
-            
-            // Обновляем иконку
-            const icon = document.querySelector('.theme-switch i');
-            icon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-            
-            // Сохраняем выбор темы
-            localStorage.setItem('theme', newTheme);
-        }
 
         function showSection(sectionId) {
             // Скрываем все секции
