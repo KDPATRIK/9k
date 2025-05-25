@@ -2292,18 +2292,8 @@
             },
             'zotov': {
                 name: 'Зотов Артем',
-                photos: [
-                    'zotov.jpg',
-                    'zotov_1.jpg',
-                    'zotov_2.jpg',
-                    'zotov_3.jpg',
-                    'zotov_4.jpg',
-                    'zotov_5.jpg',
-                    'zotov_6.jpg',
-                    'zotov_7.jpg',
-                    'zotov_8.jpg',
-                    'zotov_9.jpg'
-                ]
+                bio: 'Увлекается спортом и программированием. Участник школьных олимпиад. Помогает с организацией мероприятий.',
+                photos: ['zotov.jpg', 'zotov_1.jpg', 'zotov_2.jpg', 'zotov_3.jpg', 'zotov_4.jpg']
             },
             'brudari': {
                 name: 'Брударь Максим',
@@ -2720,7 +2710,7 @@
             'zotov': {
                 name: 'Зотов Артем',
                 bio: 'Увлекается спортом и программированием. Участник школьных олимпиад. Помогает с организацией мероприятий.',
-                photos: ['zotov.jpg', 'zotov_1.jpg', 'zotov_2.jpg', 'zotov_3.jpg']
+                photos: ['zotov.jpg', 'zotov_1.jpg', 'zotov_2.jpg', 'zotov_3.jpg', 'zotov_4.jpg']
             },
             'brudari': {
                 name: 'Брударь Максим',
@@ -2772,11 +2762,9 @@
             const modal = document.createElement('div');
             modal.className = 'student-modal';
             
-            // Создаем контент модального окна
             const modalContent = document.createElement('div');
             modalContent.className = 'student-modal-content';
             
-            // Создаем заголовок
             const header = document.createElement('div');
             header.className = 'student-modal-header';
             header.innerHTML = `
@@ -2786,26 +2774,14 @@
                 </button>
             `;
             
-            // Создаем тело модального окна
             const body = document.createElement('div');
             body.className = 'student-modal-body';
             
-            // Создаем галерею фотографий
             const photosContainer = document.createElement('div');
             photosContainer.className = 'student-modal-photos';
             
-            // Добавляем только существующие фотографии
-            const validPhotos = student.photos.filter(photo => {
-                const img = new Image();
-                img.src = photo;
-                return img.complete || img.naturalWidth !== 0;
-            });
-
-            if (validPhotos.length === 0) {
-                validPhotos.push(student.photos[0]); // Используем основную фотографию, если другие не найдены
-            }
-
-            validPhotos.forEach(photo => {
+            // Добавляем фотографии с проверкой их существования
+            student.photos.forEach(photo => {
                 const photoDiv = document.createElement('div');
                 photoDiv.className = 'student-modal-photo';
                 
@@ -2816,15 +2792,42 @@
                 
                 // Обработка ошибок загрузки изображения
                 img.onerror = function() {
+                    console.log('Error loading image:', photo);
                     this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5Ij5Изображение не найдено</text></svg>';
                     this.classList.add('error');
                 };
+
+                // Добавляем обработчик клика для просмотра фото в полном размере
+                photoDiv.addEventListener('click', () => {
+                    const fullScreenModal = document.createElement('div');
+                    fullScreenModal.className = 'gallery-modal active';
+                    fullScreenModal.innerHTML = `
+                        <div class="gallery-content">
+                            <button class="gallery-close" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="gallery-header">
+                                <button class="gallery-back" onclick="this.parentElement.parentElement.parentElement.remove()">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Назад
+                                </button>
+                                <span class="gallery-title">${student.name}</span>
+                            </div>
+                            <div class="gallery-grid">
+                                <div class="gallery-item">
+                                    <img src="${photo}" alt="${student.name}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(fullScreenModal);
+                    document.body.style.overflow = 'hidden';
+                });
                 
                 photoDiv.appendChild(img);
                 photosContainer.appendChild(photoDiv);
             });
             
-            // Создаем информационный блок
             const infoDiv = document.createElement('div');
             infoDiv.className = 'student-modal-info';
             infoDiv.innerHTML = `
@@ -2832,14 +2835,12 @@
                 <p>${student.bio}</p>
             `;
             
-            // Собираем модальное окно
             body.appendChild(photosContainer);
             body.appendChild(infoDiv);
             modalContent.appendChild(header);
             modalContent.appendChild(body);
             modal.appendChild(modalContent);
             
-            // Добавляем модальное окно на страницу
             document.body.appendChild(modal);
             
             // Добавляем класс active с небольшой задержкой для анимации
@@ -2867,10 +2868,18 @@
 
         function closeModal(modal) {
             modal.classList.remove('active');
+            // Восстанавливаем прокрутку страницы
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            
+            // Удаляем модальное окно после завершения анимации
             setTimeout(() => {
-                modal.remove();
-                document.body.style.overflow = '';
-            }, 300); // Задержка для завершения анимации
+                if (modal && modal.parentNode) {
+                    modal.remove();
+                }
+            }, 300);
         }
 
         // Обновляем обработчики для карточек учеников
@@ -2880,11 +2889,140 @@
                 card.addEventListener('click', () => {
                     const studentId = card.querySelector('.student-photo img')?.src.split('/').pop().split('.')[0].toLowerCase();
                     if (studentId && studentBios[studentId]) {
+                        // Сохраняем текущую позицию прокрутки
+                        const scrollPosition = window.pageYOffset;
+                        document.body.style.top = `-${scrollPosition}px`;
+                        document.body.style.position = 'fixed';
+                        document.body.style.width = '100%';
+                        
                         openStudentModal(studentId);
                     }
                 });
             });
         });
+
+        // Добавляем обработчик для закрытия модального окна по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.querySelector('.student-modal.active');
+                if (modal) {
+                    closeModal(modal);
+                }
+            }
+        });
+
+        // Обновляем функцию открытия модального окна
+        function openStudentModal(studentId) {
+            const student = studentBios[studentId];
+            if (!student) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'student-modal';
+            
+            const modalContent = document.createElement('div');
+            modalContent.className = 'student-modal-content';
+            
+            const header = document.createElement('div');
+            header.className = 'student-modal-header';
+            header.innerHTML = `
+                <h2 class="student-modal-title">${student.name}</h2>
+                <button class="student-modal-close" onclick="this.closest('.student-modal').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            const body = document.createElement('div');
+            body.className = 'student-modal-body';
+            
+            const photosContainer = document.createElement('div');
+            photosContainer.className = 'student-modal-photos';
+            
+            // Добавляем фотографии с проверкой их существования
+            student.photos.forEach(photo => {
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'student-modal-photo';
+                
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = student.name;
+                img.loading = 'lazy';
+                
+                // Обработка ошибок загрузки изображения
+                img.onerror = function() {
+                    console.log('Error loading image:', photo);
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5Ij5Изображение не найдено</text></svg>';
+                    this.classList.add('error');
+                };
+
+                // Добавляем обработчик клика для просмотра фото в полном размере
+                photoDiv.addEventListener('click', () => {
+                    const fullScreenModal = document.createElement('div');
+                    fullScreenModal.className = 'gallery-modal active';
+                    fullScreenModal.innerHTML = `
+                        <div class="gallery-content">
+                            <button class="gallery-close" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="gallery-header">
+                                <button class="gallery-back" onclick="this.parentElement.parentElement.parentElement.remove()">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Назад
+                                </button>
+                                <span class="gallery-title">${student.name}</span>
+                            </div>
+                            <div class="gallery-grid">
+                                <div class="gallery-item">
+                                    <img src="${photo}" alt="${student.name}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(fullScreenModal);
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                photoDiv.appendChild(img);
+                photosContainer.appendChild(photoDiv);
+            });
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'student-modal-info';
+            infoDiv.innerHTML = `
+                <h3>О себе</h3>
+                <p>${student.bio}</p>
+            `;
+            
+            body.appendChild(photosContainer);
+            body.appendChild(infoDiv);
+            modalContent.appendChild(header);
+            modalContent.appendChild(body);
+            modal.appendChild(modalContent);
+            
+            document.body.appendChild(modal);
+            
+            // Добавляем класс active с небольшой задержкой для анимации
+            requestAnimationFrame(() => {
+                modal.classList.add('active');
+            });
+            
+            // Блокируем прокрутку страницы
+            document.body.style.overflow = 'hidden';
+            
+            // Добавляем обработчики событий
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
+
+            // Добавляем обработчик для кнопки закрытия
+            const closeButton = modal.querySelector('.student-modal-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    closeModal(modal);
+                });
+            }
+        }
     </script>
 </body>
 </html>
