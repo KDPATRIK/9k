@@ -2771,50 +2771,106 @@
 
             const modal = document.createElement('div');
             modal.className = 'student-modal';
-            modal.innerHTML = `
-                <div class="student-modal-content">
-                    <div class="student-modal-header">
-                        <h2 class="student-modal-title">${student.name}</h2>
-                        <button class="student-modal-close" onclick="this.closest('.student-modal').remove()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="student-modal-body">
-                        <div class="student-modal-photos">
-                            ${student.photos.map(photo => `
-                                <div class="student-modal-photo">
-                                    <img src="${photo}" alt="${student.name}" loading="lazy">
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="student-modal-info">
-                            <h3>О себе</h3>
-                            <p>${student.bio}</p>
-                        </div>
-                    </div>
-                </div>
+            
+            // Создаем контент модального окна
+            const modalContent = document.createElement('div');
+            modalContent.className = 'student-modal-content';
+            
+            // Создаем заголовок
+            const header = document.createElement('div');
+            header.className = 'student-modal-header';
+            header.innerHTML = `
+                <h2 class="student-modal-title">${student.name}</h2>
+                <button class="student-modal-close" onclick="this.closest('.student-modal').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             `;
-
-            document.body.appendChild(modal);
-            setTimeout(() => modal.classList.add('active'), 10);
-            document.body.style.overflow = 'hidden';
-
-            // Добавляем обработчик для закрытия по клику вне контента
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.remove();
-                    document.body.style.overflow = '';
-                }
+            
+            // Создаем тело модального окна
+            const body = document.createElement('div');
+            body.className = 'student-modal-body';
+            
+            // Создаем галерею фотографий
+            const photosContainer = document.createElement('div');
+            photosContainer.className = 'student-modal-photos';
+            
+            // Добавляем только существующие фотографии
+            const validPhotos = student.photos.filter(photo => {
+                const img = new Image();
+                img.src = photo;
+                return img.complete || img.naturalWidth !== 0;
             });
 
-            // Добавляем обработчик для клавиши Escape
+            if (validPhotos.length === 0) {
+                validPhotos.push(student.photos[0]); // Используем основную фотографию, если другие не найдены
+            }
+
+            validPhotos.forEach(photo => {
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'student-modal-photo';
+                
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = student.name;
+                img.loading = 'lazy';
+                
+                // Обработка ошибок загрузки изображения
+                img.onerror = function() {
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5Ij5Изображение не найдено</text></svg>';
+                    this.classList.add('error');
+                };
+                
+                photoDiv.appendChild(img);
+                photosContainer.appendChild(photoDiv);
+            });
+            
+            // Создаем информационный блок
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'student-modal-info';
+            infoDiv.innerHTML = `
+                <h3>О себе</h3>
+                <p>${student.bio}</p>
+            `;
+            
+            // Собираем модальное окно
+            body.appendChild(photosContainer);
+            body.appendChild(infoDiv);
+            modalContent.appendChild(header);
+            modalContent.appendChild(body);
+            modal.appendChild(modalContent);
+            
+            // Добавляем модальное окно на страницу
+            document.body.appendChild(modal);
+            
+            // Добавляем класс active с небольшой задержкой для анимации
+            requestAnimationFrame(() => {
+                modal.classList.add('active');
+            });
+            
+            // Блокируем прокрутку страницы
+            document.body.style.overflow = 'hidden';
+            
+            // Добавляем обработчики событий
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
+            
             document.addEventListener('keydown', function closeOnEscape(e) {
                 if (e.key === 'Escape') {
-                    modal.remove();
-                    document.body.style.overflow = '';
+                    closeModal(modal);
                     document.removeEventListener('keydown', closeOnEscape);
                 }
             });
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.remove();
+                document.body.style.overflow = '';
+            }, 300); // Задержка для завершения анимации
         }
 
         // Обновляем обработчики для карточек учеников
@@ -2827,38 +2883,6 @@
                         openStudentModal(studentId);
                     }
                 });
-            });
-
-            // Добавляем обработчик для фотографий в модальном окне
-            document.addEventListener('click', (e) => {
-                if (e.target.closest('.student-modal-photo')) {
-                    const img = e.target.closest('.student-modal-photo').querySelector('img');
-                    if (img) {
-                        const modal = document.createElement('div');
-                        modal.className = 'gallery-modal active';
-                        modal.innerHTML = `
-                            <div class="gallery-content">
-                                <button class="gallery-close" onclick="this.parentElement.parentElement.remove()">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                                <div class="gallery-header">
-                                    <button class="gallery-back" onclick="this.parentElement.parentElement.parentElement.remove()">
-                                        <i class="fas fa-arrow-left"></i>
-                                        Назад
-                                    </button>
-                                    <span class="gallery-title">Фотография</span>
-                                </div>
-                                <div class="gallery-grid">
-                                    <div class="gallery-item">
-                                        <img src="${img.src}" alt="${img.alt}">
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        document.body.appendChild(modal);
-                        document.body.style.overflow = 'hidden';
-                    }
-                }
             });
         });
     </script>
