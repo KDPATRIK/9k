@@ -1926,9 +1926,9 @@
                     <div class="student-info">2009 год</div>
                 </div>
                 <div class="student-card">
-                    <div class="student-photo">Фото 13</div>
-                    <div class="student-name">Ученик 13</div>
-                    <div class="student-info">Активист</div>
+                    <div class="student-photo"><img src="pesar.jpg" alt="Писаревкер Михаил" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="student-name">Писаревкер Михаил</div>
+                    <div class="student-info">2010 год</div>
                 </div>
                 <div class="student-card">
                     <div class="student-photo">Фото 14</div>
@@ -2668,8 +2668,52 @@
                 name: 'Мельник Тимофей',
                 bio: 'Спортсмен, занимается футболом. Капитан школьной команды. Хорошо учится, особенно по физике.',
                 photos: ['melnic.jpg', 'melnic_1.jpg', 'melnic_2.jpg', 'melnic_3.jpg']
+            },
+            'zotov': {
+                name: 'Зотов Артем',
+                bio: 'Увлекается спортом и программированием. Участник школьных олимпиад. Помогает с организацией мероприятий.',
+                photos: ['zotov.jpg', 'zotov_1.jpg', 'zotov_2.jpg', 'zotov_3.jpg']
+            },
+            'brudari': {
+                name: 'Брударь Максим',
+                bio: 'Активный участник школьной жизни. Увлекается спортом и музыкой. Хорошо учится по всем предметам.',
+                photos: ['brudari.JPG', 'brudari_1.jpg', 'brudari_2.jpg', 'brudari_3.jpg']
+            },
+            'savcenco': {
+                name: 'Савченко Сережа',
+                bio: 'Спортсмен, занимается баскетболом. Участник школьных соревнований. Хорошо учится, особенно по физической культуре.',
+                photos: ['savcenco.jpg', 'savcenco_1.jpg', 'savcenco_2.jpg', 'savcenco_3.jpg']
+            },
+            'raisher': {
+                name: 'Раимишер Михаил',
+                bio: 'Творческая личность, увлекается музыкой и рисованием. Участник школьных концертов. Хорошо учится по гуманитарным предметам.',
+                photos: ['raisher.jpg', 'raisher_1.jpg', 'raisher_2.jpg', 'raisher_3.jpg']
+            },
+            'volcov': {
+                name: 'Волков Александр',
+                bio: 'Спортсмен, занимается легкой атлетикой. Участник городских соревнований. Хорошо учится, особенно по математике.',
+                photos: ['volcov.jpg', 'volcov_1.jpg', 'volcov_2.jpg', 'volcov_3.jpg']
+            },
+            'mir': {
+                name: 'Яцышена Мирослава',
+                bio: 'Творческая личность, увлекается танцами и пением. Участница школьных концертов. Хорошо учится по всем предметам.',
+                photos: ['mir.jpg', 'mir_1.jpg', 'mir_2.jpg', 'mir_3.jpg']
+            },
+            'slobod': {
+                name: 'Слободской Ярослав',
+                bio: 'Увлекается программированием и робототехникой. Участник олимпиад по информатике. Помогает с техническими вопросами.',
+                photos: ['slobod.jpg', 'slobod_1.jpg', 'slobod_2.jpg', 'slobod_3.jpg']
+            },
+            'kirilova': {
+                name: 'Кирилова Арина',
+                bio: 'Активная участница школьных мероприятий. Увлекается рисованием и танцами. Хорошо учится, особенно по литературе.',
+                photos: ['kirilova.jpg', 'kirilova_1.jpg', 'kirilova_2.jpg', 'kirilova_3.jpg']
+            },
+            'pesar': {
+                name: 'Писаревкер Михаил',
+                bio: 'Увлекается спортом и программированием. Участник школьных олимпиад. Помогает с организацией мероприятий.',
+                photos: ['pesar.jpg', 'pesar_1.jpg', 'pesar_2.jpg', 'pesar_3.jpg']
             }
-            // Добавьте биографии для остальных учеников
         };
 
         // Функция для открытия модального окна ученика
@@ -2735,6 +2779,38 @@
                         openStudentModal(studentId);
                     }
                 });
+            });
+
+            // Добавляем обработчик для фотографий в модальном окне
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.student-modal-photo')) {
+                    const img = e.target.closest('.student-modal-photo').querySelector('img');
+                    if (img) {
+                        const modal = document.createElement('div');
+                        modal.className = 'gallery-modal active';
+                        modal.innerHTML = `
+                            <div class="gallery-content">
+                                <button class="gallery-close" onclick="this.parentElement.parentElement.remove()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div class="gallery-header">
+                                    <button class="gallery-back" onclick="this.parentElement.parentElement.parentElement.remove()">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Назад
+                                    </button>
+                                    <span class="gallery-title">Фотография</span>
+                                </div>
+                                <div class="gallery-grid">
+                                    <div class="gallery-item">
+                                        <img src="${img.src}" alt="${img.alt}">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        document.body.appendChild(modal);
+                        document.body.style.overflow = 'hidden';
+                    }
+                }
             });
         });
     </script>
