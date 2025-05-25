@@ -76,6 +76,26 @@
             --accent-gradient: linear-gradient(90deg, #00ff9d, #00b8ff);
         }
 
+        :root[data-theme="stars"] {
+            --bg-gradient: linear-gradient(135deg, #0B0B2B 0%, #1B1B4B 100%);
+            --card-bg: rgba(11, 11, 43, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #FFD700;
+            --shadow-color: rgba(255, 215, 0, 0.2);
+            --header-bg: rgba(11, 11, 43, 0.95);
+            --accent-gradient: linear-gradient(90deg, #FFD700, #FFA500);
+        }
+
+        :root[data-theme="rain"] {
+            --bg-gradient: linear-gradient(135deg, #2C3E50 0%, #3498DB 100%);
+            --card-bg: rgba(44, 62, 80, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #AED6F1;
+            --shadow-color: rgba(174, 214, 241, 0.2);
+            --header-bg: rgba(44, 62, 80, 0.95);
+            --accent-gradient: linear-gradient(90deg, #3498DB, #AED6F1);
+        }
+
         /* Анимации для фона */
         @keyframes spaceAnimation {
             0% { background-position: 0% 50%; }
@@ -107,6 +127,16 @@
             100% { box-shadow: 0 0 5px var(--text-secondary), 0 0 10px var(--text-secondary); }
         }
 
+        @keyframes starsAnimation {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes rainAnimation {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+
         /* Применение анимаций к темам */
         [data-theme="space"] body {
             background-size: 400% 400%;
@@ -130,6 +160,22 @@
 
         [data-theme="neon"] .student-card {
             animation: neonGlow 2s ease-in-out infinite;
+        }
+
+        [data-theme="stars"] body {
+            background-size: 400% 400%;
+            animation: starsAnimation 20s linear infinite;
+            background-image: 
+                linear-gradient(135deg, #0B0B2B 0%, #1B1B4B 100%),
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+        }
+
+        [data-theme="rain"] body {
+            background-size: 200% 200%;
+            animation: rainAnimation 15s linear infinite;
+            background-image: 
+                linear-gradient(135deg, #2C3E50 0%, #3498DB 100%),
+                linear-gradient(to bottom, transparent 0%, rgba(174, 214, 241, 0.1) 100%);
         }
 
         /* Стили для кнопки меню */
@@ -1766,6 +1812,14 @@
             <i class="fas fa-lightbulb"></i>
             <span>Неон</span>
         </button>
+        <button class="theme-button" onclick="changeTheme('stars')" data-theme="stars">
+            <i class="fas fa-star"></i>
+            <span>Звезды</span>
+        </button>
+        <button class="theme-button" onclick="changeTheme('rain')" data-theme="rain">
+            <i class="fas fa-cloud-rain"></i>
+            <span>Дождь</span>
+        </button>
     </div>
     <div class="container">
         <header>
@@ -2186,15 +2240,9 @@
                 name: 'Рудик Анастасия',
                 photos: [
                     'rudic.jpg',
-                    'rudic_1.jpg',
                     'rudic_2.jpg',
                     'rudic_3.jpg',
-                    'rudic_4.jpg',
-                    'rudic_5.jpg',
-                    'rudic_6.jpg',
-                    'rudic_7.jpg',
-                    'rudic_8.jpg',
-                    'rudic_9.jpg'
+                    'rudic_4.jpg'
                 ]
             },
             'drob': {
@@ -2652,7 +2700,7 @@
             'rudic': {
                 name: 'Рудик Анастасия',
                 bio: 'Творческая личность, участвует в школьных концертах. Любит петь и танцевать. Хорошо учится, особенно по гуманитарным предметам.',
-                photos: ['rudic.jpg', 'rudic_1.jpg', 'rudic_2.jpg', 'rudic_3.jpg']
+                photos: ['rudic.jpg', 'rudic_2.jpg', 'rudic_3.jpg', 'rudic_4.jpg']
             },
             'drob': {
                 name: 'Дробицкая Дарья',
