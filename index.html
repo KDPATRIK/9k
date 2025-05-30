@@ -96,6 +96,16 @@
             --accent-gradient: linear-gradient(90deg, #3498DB, #AED6F1);
         }
 
+        :root[data-theme="cosmic"] {
+            --bg-gradient: none;
+            --card-bg: rgba(45, 0, 90, 0.85);
+            --text-primary: #ffffff;
+            --text-secondary: #b388ff;
+            --shadow-color: rgba(179, 136, 255, 0.2);
+            --header-bg: rgba(45, 0, 90, 0.95);
+            --accent-gradient: linear-gradient(90deg, #7c4dff, #b388ff);
+        }
+
         /* Анимации для фона */
         @keyframes spaceAnimation {
             0% { background-position: 0% 50%; }
@@ -176,6 +186,111 @@
             background-image: 
                 linear-gradient(135deg, #2C3E50 0%, #3498DB 100%),
                 linear-gradient(to bottom, transparent 0%, rgba(174, 214, 241, 0.1) 100%);
+        }
+
+        [data-theme="cosmic"] body {
+            background-image: url('cosmos.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        [data-theme="cosmic"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(45, 0, 90, 0.7) 0%, rgba(124, 77, 255, 0.3) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        [data-theme="cosmic"] .student-card,
+        [data-theme="cosmic"] .category-card,
+        [data-theme="cosmic"] .achievement-card,
+        [data-theme="cosmic"] .event-card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(179, 136, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(179, 136, 255, 0.1);
+        }
+
+        [data-theme="cosmic"] .student-card:hover,
+        [data-theme="cosmic"] .category-card:hover,
+        [data-theme="cosmic"] .achievement-card:hover,
+        [data-theme="cosmic"] .event-card:hover {
+            border-color: rgba(179, 136, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(179, 136, 255, 0.2);
+        }
+
+        [data-theme="cosmic"] .student-card::before,
+        [data-theme="cosmic"] .category-card::before {
+            background: linear-gradient(45deg, rgba(124, 77, 255, 0.1), rgba(179, 136, 255, 0.1));
+        }
+
+        [data-theme="cosmic"] .theme-button:hover {
+            background: rgba(179, 136, 255, 0.1);
+        }
+
+        [data-theme="cosmic"] .theme-button.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+        }
+
+        [data-theme="cosmic"] .back-button,
+        [data-theme="cosmic"] .chat-send-button {
+            background: var(--accent-gradient);
+            box-shadow: 0 5px 15px rgba(124, 77, 255, 0.3);
+        }
+
+        [data-theme="cosmic"] .back-button:hover,
+        [data-theme="cosmic"] .chat-send-button:hover {
+            box-shadow: 0 8px 25px rgba(124, 77, 255, 0.4);
+        }
+
+        [data-theme="cosmic"] .search-input,
+        [data-theme="cosmic"] .chat-input {
+            background: rgba(45, 0, 90, 0.7);
+            border-color: rgba(179, 136, 255, 0.3);
+        }
+
+        [data-theme="cosmic"] .search-input:focus,
+        [data-theme="cosmic"] .chat-input:focus {
+            border-color: var(--accent-gradient);
+            box-shadow: 0 0 15px rgba(124, 77, 255, 0.2);
+        }
+
+        [data-theme="cosmic"] .filter-button {
+            background: rgba(45, 0, 90, 0.7);
+            border-color: rgba(179, 136, 255, 0.3);
+        }
+
+        [data-theme="cosmic"] .filter-button:hover,
+        [data-theme="cosmic"] .filter-button.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+        }
+
+        [data-theme="cosmic"] .student-modal-content,
+        [data-theme="cosmic"] .gallery-modal .gallery-content {
+            background: rgba(45, 0, 90, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(179, 136, 255, 0.2);
+        }
+
+        [data-theme="cosmic"] .gallery-header {
+            background: rgba(45, 0, 90, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="cosmic"] .gallery-item {
+            border: 1px solid rgba(179, 136, 255, 0.2);
+        }
+
+        [data-theme="cosmic"] .gallery-item:hover {
+            border-color: rgba(179, 136, 255, 0.4);
         }
 
         /* Стили для кнопки меню */
@@ -1819,6 +1934,10 @@
         <button class="theme-button" onclick="changeTheme('rain')" data-theme="rain">
             <i class="fas fa-cloud-rain"></i>
             <span>Дождь</span>
+        </button>
+        <button class="theme-button" onclick="changeTheme('cosmic')" data-theme="cosmic">
+            <i class="fas fa-galaxy"></i>
+            <span>Космический</span>
         </button>
     </div>
     <div class="container">
